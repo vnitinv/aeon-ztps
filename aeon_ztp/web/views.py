@@ -632,9 +632,9 @@ def aos_run_ver():
     try:
         config.read(aos_ini)
         aos_ver = config.get('aos-server', 'aos_version')
-        if not aos_ver:
-            return 'Error'
         return aos_ver
+    except ConfigParser.NoOptionError:
+        return None
     except ConfigParser.Error:
         return 'Error'
 
