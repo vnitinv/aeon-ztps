@@ -1,14 +1,19 @@
 - name: update hostname
   hostname: name={{ Hostname }}
+  become: true
+  when: not docker
 
 - name: update hostname in /etc/hosts
   command: sed  -ie 's/^\(127.0[^ \t]*\)[ \t]*ubuntu$/\1\t{{ Hostname }}/g' /etc/hosts
   ignore_errors: true
+  when: not docker
 
 - name: Update apt
   apt:
     update_cache: yes
+  when: not docker
 
 - include: users.yml
 - include: software.yml
 - include: interfaces.yml
+  when: not docker

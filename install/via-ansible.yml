@@ -4,6 +4,8 @@
   gather_facts: false
   vars:
     - TopDir: "{{ playbook_dir }}/.."
+    - packer: False
+    - docker: False
 
   vars_files:
     - vars/host.yml
@@ -19,7 +21,7 @@
 
   # Ansible requires python2, which is not installed by default on Ubuntu Xenial
   pre_tasks:
-    - raw: sudo apt-get -y install python-simplejson
+    - raw: apt-get -y install python-simplejson
     # action: setup will gather facts after python2 has been installed
     - action: setup
 

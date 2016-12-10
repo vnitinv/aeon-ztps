@@ -18,6 +18,7 @@
     - downloads
     - packages
     - docs
+  when: not docker
 
 - name: copy aeon-ztp source files over
   copy:
@@ -31,6 +32,7 @@
     - setup.py
     - MANIFEST.in
     - requirements.txt
+  when: not docker
 
 - name: make bin items executable
   shell: chmod +x {{ Install_dir }}/bin/*
@@ -59,6 +61,7 @@
 - name: copy ztp-scripts to tftpboot
   copy: src="{{ TopDir }}/ztp-scripts/" dest={{ Install_dir }}/tftpboot
         owner=nobody mode=777
+  when: not docker
 
 - name: symlink ztp-cumulus in downloads directory
   file: state=link
