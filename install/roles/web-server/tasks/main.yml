@@ -6,6 +6,7 @@
     - nginx-full
     - uwsgi
     - uwsgi-plugin-python
+    - python-celery
 
 - include: install_celery.yml
 - include: install_uwsgi.yml
