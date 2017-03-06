@@ -1,13 +1,12 @@
 import os
 import yaml
 import tempfile
-import pytest
 import json
 import sys
 import copy
 from collections import namedtuple
 import pytest
-from mock import patch, Mock, MagicMock
+from mock import patch
 
 from aeon_ztp.bin import aztp_os_selector
 
@@ -47,8 +46,9 @@ cfg_data = {
 def cli_args():
 
     parse = aztp_os_selector.cli_parse(['--json', json.dumps(dev_data),
-                                     '--config', 'os-selector.cfg'])
+                                        '--config', 'os-selector.cfg'])
     return parse
+
 
 def os_sel_file(contents=None):
     """
@@ -289,7 +289,7 @@ def test_main_hwmultimatch_error(mock_cli_parse, mock_load_cfg, mock_json_load, 
 @patch('aeon_ztp.bin.aztp_os_selector.load_cfg', return_value=cfg_data)
 @patch('aeon_ztp.bin.aztp_os_selector.cli_parse')
 def test_main_cfgerror(mock_cli_parse, mock_load_cfg, mock_json_load, mock_exit_results, mock_hw_match,
-                                 mock_os_match, cli_args):
+                       mock_os_match, cli_args):
     errmsg = 'Expecting one of'
     mock_os_match.side_effect = aztp_os_selector.CfgError(errmsg)
     mock_cli_parse.return_value = cli_args
@@ -307,7 +307,7 @@ def test_main_cfgerror(mock_cli_parse, mock_load_cfg, mock_json_load, mock_exit_
 @patch('aeon_ztp.bin.aztp_os_selector.load_cfg', return_value=cfg_data)
 @patch('aeon_ztp.bin.aztp_os_selector.cli_parse')
 def test_main(mock_cli_parse, mock_load_cfg, mock_json_load, mock_exit_results, mock_hw_match,
-                                 mock_os_match, cli_args):
+              mock_os_match, cli_args):
     sw_match = '1.0.0'
     mock_os_match.return_value = sw_match
     mock_cli_parse.return_value = cli_args

@@ -9,6 +9,7 @@ from aeon_ztp import ztp_os_selector
 topdir = '/opt/aeonztps/'
 ztp_os_selector._AEON_TOPDIR = topdir
 
+
 def test_vendor_list():
     expected_vendor_list = ['nxos', 'eos', 'cumulus']
     vendor_list = ztp_os_selector.vendor_list()
@@ -24,9 +25,9 @@ def test_load_yaml():
     assert test_yaml == data
 
 
-@patch('ztp_os_selector.file')
-def test_load_yaml_exception(mock_file):
-    mock_file.side_effect = IOError
+@patch('aeon_ztp.ztp_os_selector.yaml.load')
+def test_load_yaml_exception(mock_yaml):
+    mock_yaml.side_effect = IOError()
     with pytest.raises(IOError):
         ztp_os_selector.load_yaml('filename')
 
@@ -42,11 +43,11 @@ def test_get(mock_load_yaml):
 def test_vendor_missing_config():
     vname = 'test_vendor'
     v = ztp_os_selector.Vendor(vname)
-    assert v.check_firmware == False
+    assert not v.check_firmware
     assert v.default_image == 'Missing Config'
 
 
-@patch('aeon_ztp.ztp_os_selector.os.access', return_value = True)
+@patch('aeon_ztp.ztp_os_selector.os.access', return_value=True)
 @patch('aeon_ztp.ztp_os_selector.get')
 def test_vendor(mock_get, mock_os_access):
     default_image = 'test_image'
@@ -59,6 +60,6 @@ def test_vendor(mock_get, mock_os_access):
                                              'etc/profiles/default/{vendor}/os-selector.cfg'.format(vendor=vendor))
     assert v.path == path
     assert v.image == os.path.join(path, default_image)
-    assert v.check_firmware == True
+    assert v.check_firmware
     assert v.default_image == default_image
     assert v.vendor == vendor
