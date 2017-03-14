@@ -13,8 +13,8 @@
 
 - name: Install Example DHCP configuration file
   copy:
-    src: example_dhcpd.conf
-    dest: /etc/dhcp/example_dhcpd.conf
+    src: aeon_ztps_example_dhcpd.conf
+    dest: /etc/dhcp/aeon_ztps_example_dhcpd.conf
   when: DHCPS_enable == False
 
 - name: Install DHCP reset script
